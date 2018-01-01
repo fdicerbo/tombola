@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">tombola</string>
     <string name="estrazione_text">Estrazione</string>
+    <string name="reset_name">Reset</string>
+    <string name="reset_message">il gioco ricomincia da capo!!!"</string>
+    <string name="log_name">Lista numeri estratti"</string>
 </resources>

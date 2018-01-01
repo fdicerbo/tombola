@@ -2,6 +2,7 @@ package io.github.fdicerbo.tombola;
 
 //import android.support.v7.app.AppCompatActivity;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.security.SecureRandom;
@@ -16,6 +18,9 @@ import java.security.SecureRandom;
 public class MainActivity extends Activity {
 
     int counter = 0;
+
+    String elencoEstratti = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +33,11 @@ public class MainActivity extends Activity {
 //        setContentView(pixelGrid);
         setContentView(R.layout.activity_main);
 
-        TableLayout stk = (TableLayout) findViewById(R.id.mainTableLayout);
+        TableLayout stk = (TableLayout) findViewById(R.id.contentTableLayout);
         Button referenceButton = (Button) findViewById(R.id.estrazioneButton);
 
-        int width=(referenceButton.getWidth()-10)/10;
+//        int width = (referenceButton.getWidth() - 10) / 10;
+        int width = (stk.getWidth() - 10) / 10;
 
 //        TableRow tbrow0 = new TableRow(this);
 //        TextView tv0 = new TextView(this);
@@ -45,13 +51,14 @@ public class MainActivity extends Activity {
 //            tbrow.set
 
             for (int j = 0; j < 10; j++) {
-                Button aButton = new Button (this);
+                Button aButton = new Button(this);
                 aButton.setEnabled(false);
-                aButton.setWidth(width);
+
+//                aButton.setWidth(width);
 //                aButton.setTextScaleX(0.5f);
-                aButton.setText(String.valueOf(i * 10 + j+1));
-                aButton.setId((i * 10 + j+1));
-                aButton.setWidth(width);
+                aButton.setText(String.valueOf(i * 10 + j + 1));
+                aButton.setId((i * 10 + j + 1));
+//                aButton.setWidth(width);
                 tbrow.addView(aButton);
             }
             stk.addView(tbrow);
@@ -70,7 +77,60 @@ public class MainActivity extends Activity {
             }
         });
 
+        Button resetButton = (Button) findViewById(R.id.resetButton);
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reset(view);
+            }
+        });
+
+        Button logViewerButton = (Button) findViewById(R.id.logButton);
+        logViewerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showLogText(view);
+            }
+        });
+
     }
+
+    private void showLogText(View view) {
+
+
+        TextView textView = (TextView) findViewById(R.id.mainTextView);
+        textView.setText(elencoEstratti);
+
+
+        switch (textView.getVisibility()) {
+            case View.INVISIBLE:
+                textView.setVisibility(View.VISIBLE);
+                break;
+            case View.VISIBLE:
+                textView.setVisibility(View.INVISIBLE);
+                break;
+        }
+
+    }
+
+    private void reset(View v) {
+
+        counter = 0;
+
+        for (int i = 0; i < 90; i++) {
+            Button targetButton = (Button) findViewById((i + 1));
+            targetButton.setEnabled(false);
+        }
+
+        Toast.makeText(
+                getApplicationContext(),
+                R.string.reset_message,
+                Toast.LENGTH_LONG).show();
+
+    }
+    
+
 
     private void estrazione(View v) {
 
@@ -83,18 +143,18 @@ public class MainActivity extends Activity {
             random.nextBytes(bytes);
             converted = (short) bytes[0];
 
-            if (converted <0) {
+            if (converted < 0) {
                 converted *= -1;
             }
-            int target=0;
-            if (counter==89) {
+            int target = 0;
+            if (counter == 89) {
                 int tmpCounter = 0;
                 Button targetButton = null;
-                for (int i = 0; i<90;i++) {
+                for (int i = 0; i < 90; i++) {
 
-                    targetButton = (Button) findViewById((i+1));
+                    targetButton = (Button) findViewById((i + 1));
                     if (targetButton.isEnabled() == false) {
-                        target = i+1;
+                        target = i + 1;
                         counter++;
                         break;
                     }
@@ -102,24 +162,36 @@ public class MainActivity extends Activity {
                 targetButton.setEnabled(true);
                 Toast.makeText(
                         getApplicationContext(),
-                        "ULTIMO Estratto: "+(target),
+                        "ULTIMO Estratto: " + (target),
                         Toast.LENGTH_LONG).show();
-                Log.d("tombola", "Estratto: "+target+" counter: "+counter);
-                flag=true;
+                String message = "Estratto: " + target + " counter: " + counter;
+
+                Log.d("tombola", message);
+
+                elencoEstratti += message+"\n";
+
+                flag = true;
             }
             if ((converted > -1) && (converted < 90) && counter < 89) {
 
-                Button targetButton = (Button) findViewById((converted+1));
+                Button targetButton = (Button) findViewById((converted + 1));
 
                 if (targetButton.isEnabled() == false) {
                     targetButton.setEnabled(true);
-                    flag=true;
+
+                    flag = true;
                     counter++;
                     Toast.makeText(
                             getApplicationContext(),
-                            "Estratto: "+(converted+1),
+                            "Estratto: " + (converted + 1),
                             Toast.LENGTH_LONG).show();
-                    Log.d("tombola", "Estratto: "+(converted+1)+" counter: "+counter);
+                    String message = "Estratto: " + (converted + 1) + " counter: " + counter;
+
+                    Log.d("tombola", message);
+
+                    elencoEstratti += message+"\n";
+
+
                 }
 
             } else if (counter == 90) {
@@ -127,7 +199,7 @@ public class MainActivity extends Activity {
                         getApplicationContext(),
                         "il gioco é finito!",
                         Toast.LENGTH_LONG).show();
-                flag=true;
+                flag = true;
             }
         } while (!flag);
 
@@ -135,4 +207,18 @@ public class MainActivity extends Activity {
     }
 
 
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
 }

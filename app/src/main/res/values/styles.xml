@@ -2,13 +2,27 @@
 
     <!-- Base application theme. -->
     <!-- <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"> -->
-    <style name="AppTheme" >
+    <style name="AppTheme" parent="android:style/Theme.Black.NoTitleBar.Fullscreen">
 
-<!--
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    -->
+        <!--<item name="Theme_colorPrimary">#FF0000</item>-->
+
+        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <!--<item name="colorAccent">@color/colorAccent</item>-->
+        <!--<item name="colorTextActive">@color/TextPrimary</item>-->
+        <!--<item name="colorTextDisabled">@color/TextDisabled</item>-->
+
+        <!--<item name="colorPrimary">#FF0000</item>-->
+        <!--<item name="colorPrimaryDark">#FF6600</item>-->
+        <!--<item name="colorAccent">#FFFFFF</item>-->
+
+        <!--<item name="colorPincoPallino">#FFFFFF</item>-->
+
     </style>
+
+    <style name="AppAltTheme" parent="android:style/Theme.Light.NoTitleBar.Fullscreen">
+
+    </style>
+
     <!-- -->
 </resources>
